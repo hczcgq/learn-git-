@@ -1,0 +1,94 @@
+<html>
+<head>
+  <title>Evernote Export</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/272632; Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1085"/>
+
+<div>
+<div style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;"><div><p><strong>1， 下载</strong></p><p>官方下载： <a href="http://ant.apache.org/" target="_blank">ant</a></p><p>直接下载： <a href="http://apache.etoak.com//ant/binaries/apache-ant-1.9.0-bin.tar.gz" target="_blank">apache-ant-1.9.0-bin.tar.gz</a> </p><p><strong>2， 安装</strong></p><p>1） 解压</p><p><span style="color: #3333ff;">tar zxvf apache-ant-1.9.0-bin.tar.gz</span> </p><p>2） 配置环境</p><p><span style="color: #3333ff;">sudo vi /etc/profile</span></p><p><span style="color: #3366ff;">export ANT_HOME=/home/homer/Apache-maven/ant-1.9.0/<br/>
+export PATH=$ANT_HOME/bin:$PATH</span></p><p><span style="color: #3333ff;">sudo source /etc/profile</span> </p><p>3） 验证</p><div>homer@<a href="http://www.linuxidc.com/topicnews.aspx?tid=2" target="_blank" title="Ubuntu">Ubuntu</a>:~$ <span style="color: #cc0000;">ant -v</span><br/><span style="color: #3366ff;">Apache Ant(TM) version 1.9.0 compiled on March 5 2013<br/>
+Trying the default build file: build.xml<br/>
+Buildfile: build.xml does not exist!<br/>
+Build failed</span></div><div><span style="color: #3366ff;"><br/></span></div></div><div><span style="color: #3366ff;"><br/></span></div><div><p><strong>4， 创建项目</strong></p><p>1） 列出<a href="http://www.linuxidc.com/topicnews.aspx?tid=11" target="_blank" title="Android">Android</a>平台列表</p><p><span style="color: #3333ff;">android list targets</span> </p><p>输出结果如下：</p><p><img src="Ant 打包教程_files/Image.png" type="image/png" style="cursor: default;"/></p><p>2） android命令创建项目</p><p>命令格式：</p><p><span style="color: #3333ff;">android create project --target &lt;target-id&gt; --name MyFirstApp --path &lt;path-to-workspace&gt; MyFirstApp --activity MainActivity --package com.example.myfirstapp</span></p><p>创建 <span style="color: #cc0000;">AntTest</span> 为例，命令如下：</p><p><span style="color: #3333ff;">android create project --target android-3 --name AntTest --path /home/homer/workspace/AntTest --activity MainActivity --package com.homer.anttest</span></p><p>创建项目如下：</p><div><img src="Ant 打包教程_files/Image [1].png" type="image/png" style="cursor: default;"/></div></div><div><br/></div><div><br/></div><div>如果android项目已存在，生成build.xml文件这是用一下命令</div><div><font color="#2D4FC9">android  update  project -p path</font></div><div><p>    <img src="Ant 打包教程_files/Image.jpg" type="image/jpeg" alt="678x112" height="104" style="cursor: default;" title="点击查看大图" width="630"/></p><p>    图中项目路径改成你自己的路径</p><p>    就会在你的项目路径里面生成如下二个文件</p><p>    <img src="Ant 打包教程_files/Image [1].jpg" type="image/jpeg" alt="611x50" height="50" style="cursor: default;" title="点击查看大图" width="611"/></p><div>    这二个文件可以不做任何改动</div></div><div><br/></div><div>在此目录下创建 ant.properties  内容如下</div><div><code>application.</code><code>package</code><code>=com.yuanhang.yinyuedongting   程序包名</code></div><div><code>ant.project.name=yinyuedongting 项目名称</code></div><div><code>java.encoding=utf-</code><code>8</code> <code>项目编码</code></div><div><code>out.absolute.dir=d:/apk/compile  临时文件存放位置</code></div><div><code>gos.path=d:/apk/yinyuedongting   apk文件存放位置</code></div><div><code>key.store=D:/\u5F00\u53D1\u8D44\u6599\/rainie.keystore  秘钥所在位置</code></div><div><code>key.store.password=rainie  秘钥密码</code></div><div><code>key.alias=rainie   秘钥别名</code></div><div><code>key.alias.password=rainie  别名密码</code></div><div><code>app_version=</code><code>1.0</code><code>.</code><code>0</code>  <code>版本</code></div><div><code>market_channels=</code><code>default</code>  <code>渠道名称，要以逗号分隔，必须在一行内</code></div><div>例如：</div><div><img src="Ant 打包教程_files/Image [2].png" type="image/png" style="cursor: default;"/></div><div><br/></div><div><br/></div><div>build.xml 文件中有段代码为：</div><div align="left">&lt;import file=&quot;custom_rules.xml&quot; optional=&quot;true&quot; /&gt;</div><div align="left">所以我们要创建custom_rules.xml 文件，文件内容为</div><div align="left"><div align="left">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br/>
+&lt;project name=&quot;custom_rules&quot;&gt;<br/><br/>
+    &lt;property<br/>
+        name=&quot;out.unaligned.dir&quot;<br/>
+        value=&quot;E:/CENS/SplashU7_${app_version}/&quot; /&gt;<br/><br/>
+    &lt;mkdir dir=&quot;${out.unaligned.dir}&quot; /&gt;<br/>
+   <br/>
+    &lt;!-- 打包，并执行ant.release命令，输出到指定目录 --&gt;<br/><br/>
+    &lt;target name=&quot;modify_update_file&quot; &gt;<br/><br/>
+        &lt;echo&gt;*********************** make channel${channel}&lt;/echo&gt;<br/><br/>
+        &lt;replaceregexp file=&quot;AndroidManifest.xml&quot; <br/>
+            match='channel' <br/>
+            replace='${channel}' <br/>
+            byline=&quot;false&quot; <br/>
+            encoding=&quot;utf-8&quot; <br/>
+        /&gt; <br/>
+        &lt;property<br/>
+            name=&quot;out.unaligned.file&quot;<br/>
+            location=&quot;${out.unaligned.dir}/SplashU7_${channel}.apk&quot; /&gt;<br/>
+       <br/>
+    &lt;/target&gt;<br/><br/>
+    &lt;!-- 开始执行打包，depends中顺序执行，分别是保存AndroidManifest.xml文件，替换，发布，复制，删除 --&gt;<br/><br/>
+    &lt;target<br/>
+        name=&quot;make_one_channels&quot;<br/>
+        depends=&quot;savemanifest,modify_update_file,release,replacemanifest,deletebin&quot;<br/>
+        description=&quot;description&quot; &gt;<br/>
+    &lt;/target&gt;<br/><br/>
+    &lt;!-- 事先先保存一份AndroidManifest.xml文件 --&gt;<br/><br/>
+    &lt;target name=&quot;savemanifest&quot; &gt;<br/>
+       <br/>
+        &lt;copy<br/>
+            encoding=&quot;utf-8&quot;<br/>
+            file=&quot;${basedir}\AndroidManifest.xml&quot;<br/>
+            todir=&quot;..\temp\build\META-INF&quot; /&gt;<br/>
+    &lt;/target&gt;<br/><br/>
+    &lt;!-- 删除根目录下的AndroidManifest.xml文件，并将替换后的 AndroidManifest.xml文件拷贝一份至根目录 --&gt;<br/><br/>
+    &lt;target name=&quot;replacemanifest&quot; &gt;<br/><br/>
+        &lt;delete file=&quot;${basedir}\AndroidManifest.xml&quot;/&gt; <br/><br/>
+        &lt;copy<br/>
+            encoding=&quot;utf-8&quot;<br/>
+            file=&quot;..\temp\build\META-INF\AndroidManifest.xml&quot;<br/>
+            todir=&quot;${basedir}&quot; /&gt;<br/>
+    &lt;/target&gt;<br/><br/>
+    &lt;!-- 删除根目录下的bin文件，不然只能打包一个渠道 --&gt;<br/><br/>
+    &lt;target name=&quot;deletebin&quot; &gt;<br/><br/>
+        &lt;delete dir=&quot;${basedir}\bin&quot; /&gt;<br/>
+    &lt;/target&gt;<br/><br/>
+    &lt;!-- 载入 ant-contrib-1.0b3.jar包 --&gt;<br/><br/>
+    &lt;taskdef resource=&quot;net/sf/antcontrib/antcontrib.properties&quot; &gt;<br/><br/>
+        &lt;classpath&gt;<br/>
+            &lt;pathelement location=&quot;D:\Chenguoquan\jar\ant-contrib-1.0b3.jar&quot; /&gt;<br/>
+        &lt;/classpath&gt;<br/>
+    &lt;/taskdef&gt;<br/>
+   <br/><br/>
+    &lt;!-- ant编译的入口 --&gt;<br/><br/>
+    &lt;target name=&quot;channels&quot; &gt;<br/><br/>
+        &lt;!--<br/>
+           foreach开启循环打包过程<br/><br/>
+           delimiter:从ant.properties中获取到渠道，并用&quot;,&quot;隔开<br/><br/>
+           market_channels指的是需要发布的渠道号<br/><br/>
+           并开始执行make_one_channels<br/><br/>
+        --&gt;<br/><br/>
+        &lt;foreach<br/>
+            delimiter=&quot;,&quot;<br/>
+            list=&quot;${market_channels}&quot;<br/>
+            param=&quot;channel&quot;<br/>
+            target=&quot;make_one_channels&quot; &gt;<br/>
+        &lt;/foreach&gt;<br/>
+    &lt;/target&gt;<br/><br/>
+&lt;/project&gt;</div><pre>
+
+</pre></div><div align="left"><br/></div><div><br/></div><div><br/></div></div>
+</div></body></html> 
